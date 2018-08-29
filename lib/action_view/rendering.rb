@@ -5,8 +5,11 @@ module ActionView
       path = template_path(action)
 
       content = Template.find(path).render(context)
+      body = Template.find(layout_path).render(context) do
+        content
+      end
 
-      response.body = [content]
+      response.body = [body]
     end
 
     def view_assigns
@@ -19,6 +22,10 @@ module ActionView
 
     def template_path(action)
       "#{Rails.root}/app/views/#{controller_name}/#{action}.html.erb"
+    end
+
+    def layout_path
+      "#{Rails.root}/app/views/layouts/application.html.erb"
     end
 
     def controller_name
