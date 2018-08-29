@@ -4,5 +4,6 @@ module ActionController
     include RequestForgeryProtection
     include Redirecting
     include ActionView::Rendering
+    include ImplicitRender
   end
 end
