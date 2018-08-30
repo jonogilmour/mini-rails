@@ -1,4 +1,6 @@
 # Mini Rails
+[![Build Status](https://travis-ci.com/jonogilmour/mini-rails.svg?branch=master)](https://travis-ci.com/jonogilmour/mini-rails)
+
 A from-scratch rebuild of the `rails` gem. Includes working versions of:
 
 - Action Controller
