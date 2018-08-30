@@ -31,9 +31,14 @@ describe ActionController do
       end
   end
 
+  before(:each) do
+    allow(File).to receive(:read).and_return("foobar_acontrol")
+  end
+
   describe "#process" do
     it "should call the method given by the symbol" do
       controller = TestController.new
+      controller.response = Rack::Response.new
       allow(controller).to receive(:index)
       controller.process :index
 
@@ -44,6 +49,7 @@ describe ActionController do
   describe "#before_action" do
     it "should call the given method before any action" do
       controller = TestController.new
+      controller.response = Rack::Response.new
       allow(controller).to receive(:both_callback)
       allow(controller).to receive(:all_callback)
       allow(controller).to receive(:show_callback)
@@ -56,6 +62,7 @@ describe ActionController do
 
     it "should call the given method only before the given action" do
       controller = TestController.new
+      controller.response = Rack::Response.new
       allow(controller).to receive(:both_callback)
       allow(controller).to receive(:all_callback)
       allow(controller).to receive(:show_callback)
@@ -71,6 +78,10 @@ describe ActionController do
   describe "#redirect_to" do
     class Response
       attr_accessor :status, :location, :body
+
+      def empty?
+        body.empty?
+      end
     end
     it "should set the response status, location, and body" do
       controller = TestController.new

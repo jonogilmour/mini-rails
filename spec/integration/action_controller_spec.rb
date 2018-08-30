@@ -8,13 +8,19 @@ describe PostsController do
   describe "#before_action" do
     it "should not call the method for #index" do
       posts_controller = PostsController.new
+      posts_controller.response = Rack::Response.new
       allow(posts_controller).to receive(:set_post)
+      # stub #render to prevent issues during rendering
+      allow(posts_controller).to receive(:render)
       posts_controller.process :index
       expect(posts_controller).not_to have_received(:set_post)
     end
 
     it "should call the method for #show" do
       posts_controller = PostsController.new
+      posts_controller.response = Rack::Response.new
+      # stub #render to prevent issues during rendering
+      allow(posts_controller).to receive(:render)
       allow(posts_controller).to receive(:set_post)
       posts_controller.process :show
       expect(posts_controller).to have_received(:set_post)
@@ -24,6 +30,7 @@ describe PostsController do
   describe "#set_post" do
     it "should set @post" do
       posts_controller = PostsController.new
+      posts_controller.response = Rack::Response.new
       allow(posts_controller).to receive(:params) { {id: 1} }
       posts_controller.send :set_post
       expect(posts_controller.instance_variable_get(:@post).id).to eql(1)

@@ -20,7 +20,9 @@ describe ActionView::Rendering do
       controller = TestController.new
       controller.response = Rack::Response.new
       expect(controller).to receive(:template_path).with("show").and_return("path/to/show.html.erb")
-      expect(ActionView::Template).to receive(:find).with("path/to/show.html.erb").and_return(ActionView::Template.new(nil, nil))
+      expect(controller).to receive(:layout_path).and_return("path/to/layout.html.erb")
+      expect(ActionView::Template).to receive(:find).ordered.with("path/to/show.html.erb").and_return(ActionView::Template.new(nil, nil))
+      expect(ActionView::Template).to receive(:find).ordered.with("path/to/layout.html.erb").and_return(ActionView::Template.new(nil, nil))
 
       # Stub render to as it shouldn't be called for real
       allow_any_instance_of(ActionView::Template).to receive(:render).and_return("foobar")

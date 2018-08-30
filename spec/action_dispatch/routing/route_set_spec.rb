@@ -1,6 +1,11 @@
 require "spec_helper"
 
 describe ActionDispatch::Routing::RouteSet do
+
+  before(:each) do
+    allow(File).to receive(:read).and_return("foobar_routeset")
+  end
+
   describe "#add_route" do
     it "should add a new route with a linked controller action" do
       routes = ActionDispatch::Routing::RouteSet.new
